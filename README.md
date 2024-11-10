@@ -1,5 +1,5 @@
 # safe_x_hackThisFall
-
+![Alt text](https://github.com/lakshmishreea122003/safe_x_hackThisFall/blob/main/Screenshot%202024-11-10%20065123.jpg)
 ## The problem Safe X solves
 🌐Social media is a central part of modern life.Yet, as a woman,I know firsthand that it’s also a space where negativity and targeted harassment can make us feel vulnerable.Women are disproportionately affected by harmful comments, bullying,and online abuse, which can take a toll on mental health and well-being.Should women have to avoid these platforms to stay safe?Safe_X answers,no! Instead,it’s an AI-powered app designed to equip users with essential tools to make social media a safer,healthier place,offering the support and protection women need to stay connected confidently.
 - AI-Powered Harm Detection🛡️: Using advanced Gemini API and ML models,Safe_X detects and alerts users about harmful content, including bullying, harassment, or threats in mentions, messages, and comments.Unlike celebs with PR teams, most users can’t monitor every post directed at them.This proactive alert system helps users report offensive content without the constant worry of missing harmful interactions, so they can stay connected with peace of mind.
