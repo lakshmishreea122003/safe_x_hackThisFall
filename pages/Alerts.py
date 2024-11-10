@@ -1,6 +1,17 @@
 import streamlit as st
 from components.mysql_connect import Database
 
+from streamlit_lottie import st_lottie
+import requests
+
+# Functions
+# Function to load Lottie animations from a URL
+def load_lottie_url(url: str):
+    response = requests.get(url)
+    if response.status_code != 200:
+        return None
+    return response.json()
+
 # Initialize database connection
 db = Database()
 
@@ -24,9 +35,55 @@ def update_report_status(tweet_id):
     cursor.close()
     db.disconnect()
 
-# Display the Alerts page in Streamlit
-st.title("Alerts: Take Action Now")
-st.write("Review flagged tweets and report if necessary.")
+st.markdown(
+    """
+    <style>
+    .alert-title-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: #ffcccc; /* Light red background for alert */
+        border-radius: 10px;
+        border: 2px solid #ff0000; /* Bold red border */
+    }
+
+    .alert-title-text {
+        font-family: Arial, sans-serif;
+        font-size: 36px;
+        font-weight: bold;
+        color: #cc0000; /* Strong red color */
+        text-align: center;
+    }
+
+    .alert-subtitle-text {
+        font-size: 20px;
+        color: #333333; /* Dark grey for subtitle */
+        margin-top: 5px;
+        text-align: center;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# HTML structure for the alert title and subtitle
+st.markdown(
+    """
+    <div class="alert-title-container">
+        <div>
+            <div class="alert-title-text">⚠️ Alert: Take Action Now ⚠️</div>
+            <div class="alert-subtitle-text">Immediate attention required to address this alert</div>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# lotti
+lottie_animation = load_lottie_url("https://lottie.host/d963154e-a4ec-4432-a09a-3151a112cd73/7cZkwMheql.json")
+st_lottie(lottie_animation, height=300, width=300, key="animation")
+
 
 # Fetch tweets from the database
 tweets = fetch_tweets_from_db()
