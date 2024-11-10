@@ -66,21 +66,66 @@ class RAG:
         res = model.generate_content(prompt).text
         return res
     
-    # For food and health related legal or mental health queries, modify the prompt accordingly
-    def response_health(self, query_text):
-        query_text = f"Based on the mental health or legal status of the patient, suggest resources or advice that would help in {query_text}. " \
-                      f"Ensure the response is sensitive, compassionate, and informative."
-        res = self.query(query_text)
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        
-        prompt = (
-            f"This data {res} is from the legal and mental health support system for the question {query_text}. "
-            f"Use the provided data to give clear, supportive, and compassionate answers. "
-            f"EXPLANATION: Then explain your suggestions or advice, and how it can be helpful to the user."
-        )
-        res = model.generate_content(prompt).text
-        return res
+from streamlit_lottie import st_lottie
+import requests
 
+
+# Functions
+# Function to load Lottie animations from a URL
+def load_lottie_url(url: str):
+    response = requests.get(url)
+    if response.status_code != 200:
+        return None
+    return response.json()
+
+# title
+st.markdown(
+    """
+    <style>
+    .title-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: #f2e6ff; /* Soft purple background */
+        border-radius: 10px;
+    }
+
+    .title-text {
+        font-family: Arial, sans-serif;
+        font-size: 36px;
+        font-weight: bold;
+        color: #663399; /* Strong purple color */
+        text-align: center;
+    }
+
+    .subtitle-text {
+        font-size: 18px;
+        font-style: italic;
+        color: #555555; /* Dark grey for subtitle */
+        margin-top: 5px;
+        text-align: center;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+# HTML structure for the title and subtitle
+st.markdown(
+    """
+    <div class="title-container">
+        <div>
+            <div class="title-text">EmpowerHer: Women's Help Chat</div>
+            <div class="subtitle-text">Supporting you through every step of the way</div>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# lotti
+lottie_animation = load_lottie_url("https://lottie.host/0c341f67-405d-46a8-8225-bb7f5fbed80a/KQX1aTTSGv.json")
+st_lottie(lottie_animation, height=300, width=300, key="animation")
 
 
 # Initialize RAG
@@ -102,30 +147,8 @@ def load_lottie_url(url: str):
 lottie_animation = load_lottie_url("https://lottie.host/0c341f67-405d-46a8-8225-bb7f5fbed80a/KQX1aTTSGv.json")
 st_lottie(lottie_animation, height=300, width=300, key="animation")
 
-# Initialize session state for chat history if not already
-if "chat_history" not in st.session_state:
-    st.session_state["chat_history"] = []
-
-# Function to handle message input and display the chat history
-def handle_message():
-    user_input = st.session_state["user_message"]
-    if user_input:
-        # Append user input to chat history
-        st.session_state.chat_history.append({"sender": "User", "message": user_input})
-
-        # Query the RAG system and get the response
-        bot_response = rag.response(user_input)
-        
-        # Append bot response to chat history
-        st.session_state.chat_history.append({"sender": "Bot", "message": bot_response})
-
-        # Clear input box
-        st.session_state["user_message"] = ""
-
-# Display chat history
-for chat in st.session_state.chat_history:
-    sender = "👤" if chat["sender"] == "User" else "🤖"
-    st.markdown(f"{sender} **{chat['sender']}:** {chat['message']}")
-
-# Input box for user message with enter key submission
-st.text_input("Your message:", key="user_message", on_change=handle_message)
+# rag query
+query = st.text_area("Enter query here")
+if query:
+    res = rag.response(query)
+    st.write(res)
